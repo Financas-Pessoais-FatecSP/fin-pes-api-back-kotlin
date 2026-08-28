@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/finpes
+    username: apikotlin
+    password: apikotlin
+  jpa:
+    show-sql: true
