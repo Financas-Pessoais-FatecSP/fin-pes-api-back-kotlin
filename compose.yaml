@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: postgres:15.19-trixie
+    environment:
+      POSTGRES_USER: apikotlin
+      POSTGRES_PASSWORD: apikotlin
+      POSTGRES_DB: finpes
+    ports:
+      - "5432:5432"
