@@ -3,12 +3,16 @@ package com.finpesfatecsp.apikotlin.usecase
 import com.finpesfatecsp.apikotlin.database.entities.UserEntity
 import com.finpesfatecsp.apikotlin.database.repository.UserRepository
 import com.finpesfatecsp.apikotlin.exceptions.BusinessException
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion
 import org.springframework.stereotype.Component
 
 @Component
 class SignUpUseCase(
     private val userRepository: UserRepository,
 ) {
+    private val passwordEncoder = BCryptPasswordEncoder(BCryptVersion.`$2B`)
+
     fun signUp(dto: SignUpDTO): SignUpDTO {
         if (userRepository.findByEmail(dto.email) != null) {
             throw BusinessException(
@@ -23,7 +27,7 @@ class SignUpUseCase(
                 name = dto.name,
                 surname = dto.surname,
                 email = dto.email,
-                password = dto.password,
+                password = passwordEncoder.encode(dto.password) ?: throw Exception("Password encoding failed"),
                 picture = dto.picture,
             )
 
