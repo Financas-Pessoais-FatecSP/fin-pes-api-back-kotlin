@@ -5,3 +5,5 @@ spring:
     password: apikotlin
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: update
