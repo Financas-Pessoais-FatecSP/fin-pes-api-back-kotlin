@@ -1,6 +1,6 @@
-package com.finpesfatecsp.apikotlin.rest.controller.response
+package com.finpesfatecsp.apikotlin.rest.response
 
-class SignUpResponse(
+data class SignUpResponse(
     val name: String,
     val surname: String,
     val picture: String?,

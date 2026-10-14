@@ -1,9 +1,10 @@
 package com.finpesfatecsp.apikotlin.rest.controller
 
-import com.finpesfatecsp.apikotlin.rest.controller.request.SignUpRequest
-import com.finpesfatecsp.apikotlin.rest.controller.response.SignUpResponse
-import com.finpesfatecsp.apikotlin.usecase.SignUpDTO
-import com.finpesfatecsp.apikotlin.usecase.SignUpUseCase
+import com.finpesfatecsp.apikotlin.business.usecase.SignUpUseCase
+import com.finpesfatecsp.apikotlin.business.usecase.dto.SignUpDTO
+import com.finpesfatecsp.apikotlin.rest.request.SignUpRequest
+import com.finpesfatecsp.apikotlin.rest.response.SignUpResponse
+import com.finpesfatecsp.apikotlin.security.JwtService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class SignUpController(
     private val signUpUseCase: SignUpUseCase,
+    private val jwtService: JwtService,
 ) {
     @PostMapping("/signup")
     fun signUp(
@@ -28,15 +30,15 @@ class SignUpController(
                 ),
             )
 
+        val token = jwtService.generateToken(user.id.toString(), user.email)
+
         return ResponseEntity.ok(
             user.let {
                 SignUpResponse(
-                    id = it.id ?: throw Exception("User ID is null"),
                     name = it.name,
                     surname = it.surname,
-                    email = it.email,
-                    password = it.password,
                     picture = it.picture,
+                    token = token,
                 )
             },
         )

@@ -1,6 +1,6 @@
 package com.finpesfatecsp.apikotlin.rest.controller
 
-import com.finpesfatecsp.apikotlin.exceptions.BusinessException
+import com.finpesfatecsp.apikotlin.business.exceptions.BusinessException
 import org.springframework.http.HttpStatus
 import org.springframework.web.ErrorResponse
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -16,6 +16,20 @@ class ExceptionHandlerController {
                     exception,
                     HttpStatus.BAD_REQUEST,
                     exception.message ?: "User already exists",
+                )
+
+            "signin.failed" ->
+                ErrorResponse.create(
+                    exception,
+                    HttpStatus.UNAUTHORIZED,
+                    exception.message ?: "E-mail or password incorrect",
+                )
+
+            "account.already.exists" ->
+                ErrorResponse.create(
+                    exception,
+                    HttpStatus.BAD_REQUEST,
+                    exception.message ?: "User already have an account with the specified name",
                 )
 
             else ->
