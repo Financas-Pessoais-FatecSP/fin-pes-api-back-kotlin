@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost/finpes
+    host: localhost
     username: apikotlin
     password: apikotlin
   jpa:

@@ -12,14 +12,14 @@ class DataSourceConfiguration(
     private val dataSourceUsername: String,
     @Value("\${spring.datasource.password}")
     private val dataSourcePassword: String,
-    @Value("\${spring.datasource.url}")
-    private val dataSourceUrl: String,
+    @Value("\${spring.datasource.host}")
+    private val dataSourceHost: String,
 ) {
     @Bean
     fun dataSource(): DataSource =
         DataSourceBuilder
             .create()
-            .url(dataSourceUrl)
+            .url("jdbc:postgresql://$dataSourceHost/finpes")
             .username(dataSourceUsername)
             .password(dataSourcePassword)
             .driverClassName("org.postgresql.Driver")
