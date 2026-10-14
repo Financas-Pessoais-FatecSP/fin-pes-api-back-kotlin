@@ -1,7 +1,8 @@
-package com.finpesfatecsp.apikotlin.database.repository
+package com.finpesfatecsp.apikotlin.database.repository.impl
 
 import com.finpesfatecsp.apikotlin.database.entities.UserEntity
 import com.finpesfatecsp.apikotlin.database.jpa.UserJpaRepository
+import com.finpesfatecsp.apikotlin.database.repository.spec.UserRepository
 import org.springframework.stereotype.Repository
 
 @Repository
