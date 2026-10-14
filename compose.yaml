@@ -14,8 +14,9 @@ services:
     depends_on:
       - postgres
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres/finpes
+      SPRING_DATASOURCE_URL: postgres
       SPRING_DATASOURCE_USERNAME: apikotlin
       SPRING_DATASOURCE_PASSWORD: apikotlin
+      JWT_SECRET: c2VjcmV0
     ports:
       - "8080:8080"
