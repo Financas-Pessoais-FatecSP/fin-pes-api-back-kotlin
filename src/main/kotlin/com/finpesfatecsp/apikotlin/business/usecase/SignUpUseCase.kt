@@ -1,11 +1,11 @@
-package com.finpesfatecsp.apikotlin.usecase
+package com.finpesfatecsp.apikotlin.business.usecase
 
+import com.finpesfatecsp.apikotlin.business.exceptions.BusinessException
+import com.finpesfatecsp.apikotlin.business.usecase.dto.SignUpDTO
 import com.finpesfatecsp.apikotlin.database.entities.AccountEntity
 import com.finpesfatecsp.apikotlin.database.entities.UserEntity
 import com.finpesfatecsp.apikotlin.database.repository.spec.AccountRepository
 import com.finpesfatecsp.apikotlin.database.repository.spec.UserRepository
-import com.finpesfatecsp.apikotlin.exceptions.BusinessException
-import com.finpesfatecsp.apikotlin.usecase.dto.SignUpDTO
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion
 import org.springframework.stereotype.Component
