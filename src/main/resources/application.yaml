@@ -5,3 +5,5 @@ server:
 spring:
   application:
     name: api-kotlin
+jwt:
+  expiration: 3600000
