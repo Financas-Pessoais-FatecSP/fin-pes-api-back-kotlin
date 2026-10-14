@@ -1,8 +1,11 @@
 package com.finpesfatecsp.apikotlin.usecase
 
+import com.finpesfatecsp.apikotlin.database.entities.AccountEntity
 import com.finpesfatecsp.apikotlin.database.entities.UserEntity
-import com.finpesfatecsp.apikotlin.database.repository.UserRepository
+import com.finpesfatecsp.apikotlin.database.repository.spec.AccountRepository
+import com.finpesfatecsp.apikotlin.database.repository.spec.UserRepository
 import com.finpesfatecsp.apikotlin.exceptions.BusinessException
+import com.finpesfatecsp.apikotlin.usecase.dto.SignUpDTO
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion
 import org.springframework.stereotype.Component
@@ -10,8 +13,10 @@ import org.springframework.stereotype.Component
 @Component
 class SignUpUseCase(
     private val userRepository: UserRepository,
+    private val accountRepository: AccountRepository,
 ) {
     private val passwordEncoder = BCryptPasswordEncoder(BCryptVersion.`$2B`)
+    private val firstAccountName = "Gastos Fixos Mensais"
 
     fun signUp(dto: SignUpDTO): SignUpDTO {
         if (userRepository.findByEmail(dto.email) != null) {
@@ -31,7 +36,17 @@ class SignUpUseCase(
                 picture = dto.picture,
             )
 
-        return userRepository.save(userEntity).let {
+        val savedUser = userRepository.save(userEntity)
+
+        accountRepository.save(
+            AccountEntity(
+                id = null,
+                userId = savedUser.id ?: throw Exception("User ID is null"),
+                name = firstAccountName,
+            ),
+        )
+
+        return savedUser.let {
             SignUpDTO(
                 id = it.id,
                 name = it.name,
