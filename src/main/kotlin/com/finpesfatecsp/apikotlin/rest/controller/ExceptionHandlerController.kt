@@ -32,6 +32,20 @@ class ExceptionHandlerController {
                     exception.message ?: "User already have an account with the specified name",
                 )
 
+            "user.not.owner" ->
+                ErrorResponse.create(
+                    exception,
+                    HttpStatus.BAD_REQUEST,
+                    exception.message ?: "User cannot update an account that does not belong to them",
+                )
+
+            "entry.less.than.zero" ->
+                ErrorResponse.create(
+                    exception,
+                    HttpStatus.BAD_REQUEST,
+                    exception.message ?: "Entry amount cannot be less than zero",
+                )
+
             else ->
                 ErrorResponse.create(
                     exception,
