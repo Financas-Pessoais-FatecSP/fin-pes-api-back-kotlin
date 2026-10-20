@@ -2,7 +2,9 @@ package com.finpesfatecsp.apikotlin.business.usecase
 
 import com.finpesfatecsp.apikotlin.business.exceptions.BusinessException
 import com.finpesfatecsp.apikotlin.business.usecase.dto.AccountDTO
+import com.finpesfatecsp.apikotlin.business.usecase.dto.enums.AccountStatus
 import com.finpesfatecsp.apikotlin.database.entities.AccountEntity
+import com.finpesfatecsp.apikotlin.database.entities.enums.AccountStatusEnum
 import com.finpesfatecsp.apikotlin.database.repository.spec.AccountRepository
 import org.springframework.stereotype.Component
 
@@ -28,6 +30,7 @@ class AccountUseCase(
                 id = null,
                 userId = userId,
                 name = name,
+                status = AccountStatusEnum.ACTIVE,
             ),
         )
 
@@ -36,6 +39,7 @@ class AccountUseCase(
                 id = it.id ?: throw Exception("Account ID is null"),
                 userId = it.userId,
                 name = it.name,
+                status = AccountStatus.valueOf(it.status.name),
             )
         }
     }
@@ -46,6 +50,7 @@ class AccountUseCase(
                 id = it.id ?: throw Exception("Account ID is null"),
                 userId = it.userId,
                 name = it.name,
+                status = AccountStatus.valueOf(it.status.name),
             )
         }
 
@@ -53,6 +58,7 @@ class AccountUseCase(
         userId: Long,
         accountId: Long,
         newAccountName: String,
+        newAccountStatus: AccountStatus,
     ): List<AccountDTO> {
         val userAccounts = accountRepository.findByUserId(userId)
 
@@ -63,7 +69,7 @@ class AccountUseCase(
             )
         }
 
-        if (userAccounts.any { it.name == newAccountName }) {
+        if (userAccounts.any { it.name == newAccountName && it.id != accountId }) {
             throw BusinessException(
                 message = "User already have an account with name '$newAccountName'",
                 code = "account.already.exists",
@@ -75,6 +81,7 @@ class AccountUseCase(
                 id = accountId,
                 userId = userId,
                 name = newAccountName,
+                status = AccountStatusEnum.valueOf(newAccountStatus.name),
             ),
         )
 
@@ -83,6 +90,7 @@ class AccountUseCase(
                 id = it.id ?: throw Exception("Account ID is null"),
                 userId = it.userId,
                 name = it.name,
+                status = AccountStatus.valueOf(it.status.name),
             )
         }
     }

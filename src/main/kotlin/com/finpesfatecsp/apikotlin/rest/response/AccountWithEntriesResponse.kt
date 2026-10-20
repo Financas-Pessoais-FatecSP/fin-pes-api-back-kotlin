@@ -1,7 +1,8 @@
 package com.finpesfatecsp.apikotlin.rest.response
 
 data class AccountWithEntriesResponse(
-    val id: Long,
-    val name: String,
-    val entries: List<EntryResponse>,
+    val accountId: Long,
+    val accountName: String,
+    val accountStatus: String,
+    val accountEntries: List<EntryResponse>,
 )

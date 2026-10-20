@@ -3,6 +3,7 @@ package com.finpesfatecsp.apikotlin.business.usecase
 import com.finpesfatecsp.apikotlin.business.exceptions.BusinessException
 import com.finpesfatecsp.apikotlin.business.usecase.dto.AccountWithEntriesDTO
 import com.finpesfatecsp.apikotlin.business.usecase.dto.EntryDTO
+import com.finpesfatecsp.apikotlin.business.usecase.dto.enums.AccountStatus
 import com.finpesfatecsp.apikotlin.business.usecase.dto.enums.EntryType
 import com.finpesfatecsp.apikotlin.database.entities.EntryEntity
 import com.finpesfatecsp.apikotlin.database.entities.enums.EntryTypeEnum
@@ -57,6 +58,7 @@ class EntryUseCase(
                     id = account.id ?: throw Exception("Account ID is null"),
                     userId = account.userId,
                     name = account.name,
+                    status = AccountStatus.valueOf(account.status.name),
                     entries =
                         entryRepository.findByAccountId(entry.accountId).map {
                             EntryDTO(
@@ -92,6 +94,7 @@ class EntryUseCase(
                 id = account.id ?: throw Exception("Account ID is null"),
                 userId = account.userId,
                 name = account.name,
+                status = AccountStatus.valueOf(account.status.name),
                 entries =
                     entryRepository.findByAccountId(accountId).map {
                         EntryDTO(

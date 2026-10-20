@@ -5,7 +5,6 @@ import com.finpesfatecsp.apikotlin.business.usecase.dto.EntryDTO
 import com.finpesfatecsp.apikotlin.business.usecase.dto.enums.EntryType
 import com.finpesfatecsp.apikotlin.rest.request.CreateEntryRequest
 import com.finpesfatecsp.apikotlin.rest.response.AccountWithEntriesResponse
-import com.finpesfatecsp.apikotlin.rest.response.CreateEntryResponse
 import com.finpesfatecsp.apikotlin.rest.response.EntryResponse
 import com.finpesfatecsp.apikotlin.security.JwtService
 import org.springframework.http.ResponseEntity
@@ -28,7 +27,7 @@ class EntryController(
     fun createEntry(
         @RequestBody request: CreateEntryRequest,
         @RequestHeader(name = "Authorization") authorization: String,
-    ): ResponseEntity<CreateEntryResponse> {
+    ): ResponseEntity<AccountWithEntriesResponse> {
         val userId = jwtService.getSubject(authorization.substring(7))
 
         val accountWithEntries =
@@ -48,10 +47,11 @@ class EntryController(
             )
 
         return ResponseEntity.created(URI.create("/teste")).body(
-            CreateEntryResponse(
-                id = accountWithEntries.id,
-                name = accountWithEntries.name,
-                entries =
+            AccountWithEntriesResponse(
+                accountId = accountWithEntries.id,
+                accountName = accountWithEntries.name,
+                accountStatus = accountWithEntries.status.description,
+                accountEntries =
                     accountWithEntries.entries.map {
                         EntryResponse(
                             id = it.id ?: throw Exception("Entry ID is null"),
@@ -79,9 +79,10 @@ class EntryController(
 
         return ResponseEntity.ok(
             AccountWithEntriesResponse(
-                id = accountEntries.id,
-                name = accountEntries.name,
-                entries =
+                accountId = accountEntries.id,
+                accountName = accountEntries.name,
+                accountStatus = accountEntries.status.description,
+                accountEntries =
                     accountEntries.entries.map {
                         EntryResponse(
                             id = it.id ?: throw Exception("Entry ID is null"),

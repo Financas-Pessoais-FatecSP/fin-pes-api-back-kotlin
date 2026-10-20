@@ -1,6 +1,7 @@
 package com.finpesfatecsp.apikotlin.rest.controller
 
 import com.finpesfatecsp.apikotlin.business.usecase.AccountUseCase
+import com.finpesfatecsp.apikotlin.business.usecase.dto.enums.AccountStatus
 import com.finpesfatecsp.apikotlin.rest.request.CreateAccountRequest
 import com.finpesfatecsp.apikotlin.rest.request.UpdateAccountRequest
 import com.finpesfatecsp.apikotlin.rest.response.AccountResponse
@@ -46,6 +47,7 @@ class AccountController(
                         AccountResponse(
                             id = it.id,
                             name = it.name,
+                            status = it.status.description,
                         )
                     },
             ),
@@ -65,6 +67,7 @@ class AccountController(
                 userId = userId.toLong(),
                 accountId = accountId,
                 newAccountName = request.newAccountName,
+                newAccountStatus = AccountStatus.fromDescription(request.newAccountStatus),
             )
 
         return ResponseEntity.ok(
@@ -74,6 +77,7 @@ class AccountController(
                         AccountResponse(
                             id = it.id,
                             name = it.name,
+                            status = it.status.description,
                         )
                     },
             ),
@@ -95,6 +99,7 @@ class AccountController(
                         AccountResponse(
                             id = it.id,
                             name = it.name,
+                            status = it.status.description,
                         )
                     },
             ),
