@@ -46,7 +46,7 @@ class EntryController(
                     ),
             )
 
-        return ResponseEntity.created(URI.create("/teste")).body(
+        return ResponseEntity.created(URI.create("/entries")).body(
             AccountWithEntriesResponse(
                 accountId = accountWithEntries.id,
                 accountName = accountWithEntries.name,
