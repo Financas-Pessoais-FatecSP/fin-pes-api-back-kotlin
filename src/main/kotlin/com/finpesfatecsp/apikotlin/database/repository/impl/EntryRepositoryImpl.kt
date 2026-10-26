@@ -12,4 +12,12 @@ class EntryRepositoryImpl(
     override fun save(entry: EntryEntity): EntryEntity = entryJpaRepository.save(entry)
 
     override fun findByAccountId(accountId: Long): List<EntryEntity> = entryJpaRepository.findByAccountId(accountId)
+
+    override fun removeCategory(categoryId: Long) {
+        entryJpaRepository
+            .findByCategoryId(categoryId)
+            .forEach { entry ->
+                entryJpaRepository.save(entry.apply { entry.categoryId = null })
+            }
+    }
 }

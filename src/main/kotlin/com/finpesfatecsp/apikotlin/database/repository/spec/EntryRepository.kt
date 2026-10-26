@@ -6,4 +6,6 @@ interface EntryRepository {
     fun save(entry: EntryEntity): EntryEntity
 
     fun findByAccountId(accountId: Long): List<EntryEntity>
+
+    fun removeCategory(categoryId: Long)
 }
