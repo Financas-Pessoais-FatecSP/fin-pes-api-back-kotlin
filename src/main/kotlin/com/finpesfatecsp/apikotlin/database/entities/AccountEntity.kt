@@ -18,7 +18,7 @@ class AccountEntity(
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tb_conta")
     @SequenceGenerator(name = "tb_conta", sequenceName = "tb_conta_id_seq", allocationSize = 1)
     val id: Long?,
-    @Column(name = "id_usuario", unique = false, nullable = false)
+    @Column(name = "id_usuario", unique = false, nullable = false, columnDefinition = "bigint references tb_usuario(id)")
     val userId: Long,
     @Column(name = "tx_nome", unique = false, nullable = false)
     val name: String,
