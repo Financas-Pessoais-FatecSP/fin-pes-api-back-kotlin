@@ -111,4 +111,27 @@ class EntryUseCase(
             )
         }
     }
+
+    fun deleteEntry(
+        userId: Long,
+        entryId: Long,
+    ) {
+        val entry =
+            entryRepository.findById(entryId)
+                ?: throw BusinessException(
+                    message = "Entry not found",
+                    code = "entry.not.found",
+                )
+
+        val account = accountsRepository.findByUserId(userId)
+
+        if (account.none { it.id == entry.accountId }) {
+            throw BusinessException(
+                message = "User cannot delete an entry from an account that does not belong to them",
+                code = "user.not.owner",
+            )
+        }
+
+        entryRepository.deleteById(entryId)
+    }
 }
