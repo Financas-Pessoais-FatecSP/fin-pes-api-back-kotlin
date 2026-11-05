@@ -13,6 +13,8 @@ class EntryRepositoryImpl(
 
     override fun findByAccountId(accountId: Long): List<EntryEntity> = entryJpaRepository.findByAccountId(accountId)
 
+    override fun findByUserId(userId: Long): List<EntryEntity> = entryJpaRepository.findByUserId(userId)
+
     override fun findById(entryId: Long): EntryEntity? = entryJpaRepository.findById(entryId).orElse(null)
 
     override fun removeCategory(categoryId: Long) {

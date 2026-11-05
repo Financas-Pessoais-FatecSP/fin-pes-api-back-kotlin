@@ -7,6 +7,8 @@ interface EntryRepository {
 
     fun findByAccountId(accountId: Long): List<EntryEntity>
 
+    fun findByUserId(userId: Long): List<EntryEntity>
+
     fun findById(entryId: Long): EntryEntity?
 
     fun removeCategory(categoryId: Long)
