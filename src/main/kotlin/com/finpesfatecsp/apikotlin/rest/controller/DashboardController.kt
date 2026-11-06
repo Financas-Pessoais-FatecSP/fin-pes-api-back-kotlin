@@ -64,6 +64,8 @@ class DashboardController(
                             details = it.details,
                         )
                     },
+                revenuesByCategory = financialSummary.revenuesByCategory,
+                expensesByCategory = financialSummary.expensesByCategory,
                 totalRevenues = financialSummary.totalRevenues,
                 totalExpenses = financialSummary.totalExpenses,
                 balance = financialSummary.balance,
