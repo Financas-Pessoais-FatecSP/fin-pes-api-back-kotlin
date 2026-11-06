@@ -1,11 +1,10 @@
 package com.finpesfatecsp.apikotlin.business.usecase
 
-import com.finpesfatecsp.apikotlin.business.usecase.dto.EntryDTO
 import com.finpesfatecsp.apikotlin.business.usecase.dto.FinancialSummaryDTO
-import com.finpesfatecsp.apikotlin.business.usecase.dto.enums.EntryType
 import com.finpesfatecsp.apikotlin.database.entities.enums.EntryTypeEnum
 import com.finpesfatecsp.apikotlin.database.repository.spec.EntryCategoryRepository
 import com.finpesfatecsp.apikotlin.database.repository.spec.EntryRepository
+import com.finpesfatecsp.apikotlin.utils.converters.EntryConverter
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
@@ -62,32 +61,8 @@ class DashboardUseCase(
                 }.toMap()
 
         return FinancialSummaryDTO(
-            revenues =
-                revenues.map {
-                    EntryDTO(
-                        id = it.id,
-                        accountId = it.accountId,
-                        categoryId = it.categoryId,
-                        type = EntryType.valueOf(it.type.name),
-                        description = it.description,
-                        amount = it.amount,
-                        date = it.date,
-                        details = it.details,
-                    )
-                },
-            expenses =
-                expenses.map {
-                    EntryDTO(
-                        id = it.id,
-                        accountId = it.accountId,
-                        categoryId = it.categoryId,
-                        type = EntryType.valueOf(it.type.name),
-                        description = it.description,
-                        amount = it.amount,
-                        date = it.date,
-                        details = it.details,
-                    )
-                },
+            revenues = revenues.map { EntryConverter.toEntryDTO(it) },
+            expenses = expenses.map { EntryConverter.toEntryDTO(it) },
             revenuesByCategory = revenuesByCategory,
             expensesByCategory = expensesByCategory,
             totalRevenues = totalRevenues,
