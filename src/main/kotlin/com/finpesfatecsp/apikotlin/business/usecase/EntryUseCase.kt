@@ -7,6 +7,7 @@ import com.finpesfatecsp.apikotlin.business.usecase.dto.enums.AccountStatus
 import com.finpesfatecsp.apikotlin.database.entities.EntryEntity
 import com.finpesfatecsp.apikotlin.database.entities.enums.EntryTypeEnum
 import com.finpesfatecsp.apikotlin.database.repository.spec.AccountRepository
+import com.finpesfatecsp.apikotlin.database.repository.spec.EntryCategoryRepository
 import com.finpesfatecsp.apikotlin.database.repository.spec.EntryRepository
 import com.finpesfatecsp.apikotlin.utils.converters.EntryConverter
 import org.springframework.stereotype.Component
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component
 class EntryUseCase(
     private val entryRepository: EntryRepository,
     private val accountsRepository: AccountRepository,
+    private val entryCategoryRepository: EntryCategoryRepository,
 ) {
     fun createEntry(
         userId: Long,
@@ -39,8 +41,8 @@ class EntryUseCase(
         val entryToSave =
             EntryEntity(
                 id = null,
-                accountId = entry.accountId,
-                categoryId = entry.categoryId,
+                account = userAccounts.first { it.id == entry.accountId },
+                category = entry.categoryId?.let { entryCategoryRepository.findById(it) },
                 type = EntryTypeEnum.valueOf(entry.type.name),
                 description = entry.description,
                 amount = entry.amount,
@@ -101,7 +103,7 @@ class EntryUseCase(
 
         val account = accountsRepository.findByUserId(userId)
 
-        if (account.none { it.id == entry.accountId }) {
+        if (account.none { it.id == entry.account.id }) {
             throw BusinessException(
                 message = "User cannot delete an entry from an account that does not belong to them",
                 code = "user.not.owner",

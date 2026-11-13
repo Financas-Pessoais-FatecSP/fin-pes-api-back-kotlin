@@ -13,7 +13,7 @@ interface EntryJpaRepository : JpaRepository<EntryEntity, Long> {
         """
         select entry
         from EntryEntity entry
-        inner join AccountEntity account on entry.accountId = account.id
+        inner join AccountEntity account on entry.account.id = account.id
         inner join UserEntity user on account.userId = user.id
         where user.id = :userId
             """,

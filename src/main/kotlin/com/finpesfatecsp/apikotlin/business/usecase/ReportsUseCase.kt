@@ -43,7 +43,7 @@ class ReportsUseCase(
 
         val revenuesByCategory =
             revenues
-                .groupBy { it.categoryId }
+                .groupBy { it.category?.id }
                 .map { category ->
                     Pair(
                         userCategories[category.key] ?: EMPTY_CATEGORY,
@@ -53,7 +53,7 @@ class ReportsUseCase(
 
         val expensesByCategory =
             expenses
-                .groupBy { it.categoryId }
+                .groupBy { it.category?.id }
                 .map { category ->
                     Pair(
                         userCategories[category.key] ?: EMPTY_CATEGORY,

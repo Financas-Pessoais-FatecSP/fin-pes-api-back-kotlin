@@ -11,6 +11,8 @@ class EntryCategoryRepositoryImpl(
 ) : EntryCategoryRepository {
     override fun save(entryCategory: EntryCategoryEntity): EntryCategoryEntity = entryCategoryJpaRepository.save(entryCategory)
 
+    override fun findById(entryCategoryId: Long): EntryCategoryEntity? = entryCategoryJpaRepository.findById(entryCategoryId).orElse(null)
+
     override fun findByUserId(userId: Long): List<EntryCategoryEntity> = entryCategoryJpaRepository.findByUserId(userId)
 
     override fun deleteById(entryCategoryId: Long) {

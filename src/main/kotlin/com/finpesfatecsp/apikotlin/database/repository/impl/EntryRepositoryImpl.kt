@@ -21,7 +21,7 @@ class EntryRepositoryImpl(
         entryJpaRepository
             .findByCategoryId(categoryId)
             .forEach { entry ->
-                entryJpaRepository.save(entry.apply { entry.categoryId = null })
+                entryJpaRepository.save(entry.apply { entry.category = null })
             }
     }
 

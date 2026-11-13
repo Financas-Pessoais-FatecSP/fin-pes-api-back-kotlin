@@ -1,9 +1,10 @@
 package com.finpesfatecsp.apikotlin.rest.controller
 
 import com.finpesfatecsp.apikotlin.business.usecase.DashboardUseCase
-import com.finpesfatecsp.apikotlin.rest.response.EntryResponse
+import com.finpesfatecsp.apikotlin.rest.response.BalanceByAccountResponse
 import com.finpesfatecsp.apikotlin.rest.response.FinancialSummaryResponse
 import com.finpesfatecsp.apikotlin.security.JwtService
+import com.finpesfatecsp.apikotlin.utils.converters.EntryConverter
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestHeader
@@ -38,37 +39,23 @@ class DashboardController(
 
         return ResponseEntity.ok(
             FinancialSummaryResponse(
-                revenues =
-                    financialSummary.revenues.map {
-                        EntryResponse(
-                            id = it.id ?: throw Exception("Entry ID is null"),
-                            accountId = it.accountId,
-                            categoryId = it.categoryId,
-                            type = it.type.description,
-                            description = it.description,
-                            amount = it.amount,
-                            date = it.date,
-                            details = it.details,
-                        )
-                    },
-                expenses =
-                    financialSummary.expenses.map {
-                        EntryResponse(
-                            id = it.id ?: throw Exception("Entry ID is null"),
-                            accountId = it.accountId,
-                            categoryId = it.categoryId,
-                            type = it.type.description,
-                            description = it.description,
-                            amount = it.amount,
-                            date = it.date,
-                            details = it.details,
-                        )
-                    },
-                revenuesByCategory = financialSummary.revenuesByCategory,
-                expensesByCategory = financialSummary.expensesByCategory,
+                balance = financialSummary.balance,
                 totalRevenues = financialSummary.totalRevenues,
                 totalExpenses = financialSummary.totalExpenses,
-                balance = financialSummary.balance,
+                balanceByAccount =
+                    financialSummary.balanceByAccount.map {
+                        BalanceByAccountResponse(
+                            id = it.id,
+                            name = it.name,
+                            balance = it.balance,
+                            status = it.status,
+                        )
+                    },
+                recentEntries =
+                    financialSummary.recentEntries
+                        .map { EntryConverter.toFinancialSummaryEntryResponse(it) }
+                        .sortedBy { it.date }
+                        .reversed(),
             ),
         )
     }
